@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 			ViewGroup group = (ViewGroup)v;
 			for(int i=0; i<group.getChildCount(); ++i) {
 			    View child = group.getChildAt(i);
-			    ret += getTree(child, indent + "  ");
+			    ret += getTree(child, indent + "    ");
 			}
 		}
 		// 結果
