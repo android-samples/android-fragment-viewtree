@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.os.Build;
 
 public class MainActivity extends Activity {
@@ -39,12 +40,36 @@ public class MainActivity extends Activity {
 	@Override protected void onPostCreate(Bundle savedInstanceState) { log("onPostCreate"); super.onPostCreate(savedInstanceState); }
 	@Override protected void onStart()		{ log("onStart");	super.onStart(); }
 	@Override protected void onRestart()	{ log("onRestart");	super.onRestart(); }
-	@Override protected void onResume()		{ log("onResume");	super.onResume(); }
+	@Override protected void onResume()		{ log("onResume");	super.onResume(); showTree(); }
 	@Override protected void onPause()		{ log("onPause");	super.onPause(); }
 	@Override protected void onStop()		{ log("onStop");	super.onStop(); }
 	@Override protected void onDestroy()	{ log("onDestroy");	super.onDestroy(); }
 	@Override public void onAttachFragment(Fragment fragment) { log("onAttachFragment"); super.onAttachFragment(fragment); }
 
+	// ビューの階層をツリー表示してみる
+	private void showTree(){
+		String s = getTree(null, "");
+		TextView text = (TextView)findViewById(R.id.textView1);
+		text.setText(s);
+	}
+	private String getTree(View v, String indent){
+		String ret = "";
+		if(v == null){
+			v = getWindow().getDecorView();
+		}
+		// 自分自身
+		ret += indent + v.getClass().toString() + "\n";
+		// 子
+		if(v instanceof ViewGroup){
+			ViewGroup group = (ViewGroup)v;
+			for(int i=0; i<group.getChildCount(); ++i) {
+			    View child = group.getChildAt(i);
+			    ret += getTree(child, indent + "  ");
+			}
+		}
+		// 結果
+		return ret;
+	}
 
 	// fragment
 	public static class MyFragment extends Fragment {
